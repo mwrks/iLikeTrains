@@ -1,17 +1,17 @@
 import pandas as pd
 from simulation_engine import simulate_braking
-from visualization import create_summary_table, plot_comparison_bar, plot_time_series
+from visualization import create_summary_table, plot_comparison_bar, plot_time_series, plot_brake_force
 
 # --- Konfigurasi Parameter Simulasi ---
 # PID Parameters (Closed-Loop) - Sama dengan nilai default di kode JS
 PID_PARAMS = {
-    'kp': 5000,
-    'ki': 100,
-    'kd': 15000
+    'kp': 0.025,
+    'ki': 0.0001,
+    'kd': 0.1
 }
 
 # Open-Loop Parameters - Gaya Rem Konstan (N)
-OPEN_LOOP_FORCE = 600000
+OPEN_LOOP_FORCE = 800000
 
 # Massa Kereta (kg) - Sama dengan di kode JS
 MASSES = [450000, 465000, 480000, 495000, 510000] 
@@ -101,11 +101,14 @@ if __name__ == "__main__":
     
     # 2. Tampilkan Ringkasan Hasil
     summary_df = create_summary_table(summary, CONTROL_TYPE)
-    
+        
+    # --- NEW STABILITY CHART ---
+    plot_brake_force(results)
+
     # 3. Buat Grafik Time Series
     plot_time_series(results, 'velocity', 'Grafik Kecepatan vs Waktu', 'Kecepatan (km/h)')
     plot_time_series(results, 'distance', 'Grafik Jarak vs Waktu', 'Jarak (m)')
-    
+
     # 4. Jika Closed-Loop, jalankan dan tampilkan perbandingan
     if CONTROL_TYPE == 'closed-loop':
         print("\n--- Menjalankan Simulasi Open-Loop untuk Perbandingan (V0=300 km/h) ---")
@@ -115,3 +118,4 @@ if __name__ == "__main__":
         plot_comparison_bar(comparison_results)
 
     print("Simulasi Selesai. Grafik ditampilkan di jendela Matplotlib.")
+    # main_simulation.py

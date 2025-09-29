@@ -13,7 +13,7 @@ def simulate_braking(mass, initial_velocity, controller_type, controller_params)
     :return: Dictionary berisi data simulasi (waktu, kecepatan, jarak, dll.).
     """
     dt = 0.01  # time step (seconds)
-    max_time = 120  # max simulation time
+    max_time = 300  # max simulation time
 
     physics = TrainPhysicsModel(mass)
     

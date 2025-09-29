@@ -68,3 +68,29 @@ def plot_time_series(all_results, data_key, title, ylabel):
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.legend(title="Kondisi Beban")
     plt.show()
+
+
+def plot_brake_force(all_results):
+    """Membuat grafik Gaya Rem vs Waktu."""
+    
+    # Filter data hanya untuk V0 = 300 km/h
+    filtered_results = [r for r in all_results if r['initialVelocity'] == 300]
+    
+    if not filtered_results:
+        print("Data for 300 km/h not found for Brake Force plot.")
+        return
+        
+    plt.figure(figsize=(12, 7))
+    colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6'] # warna dari kode JS
+
+    for idx, result in enumerate(filtered_results):
+        plt.plot(result['time'], result['brake_force'] / 1000, # Bagi 1000 untuk kN (kiloNewton)
+                 label=result['loadCondition'], 
+                 color=colors[idx % len(colors)], 
+                 linewidth=2)
+    plt.title(f'Grafik Gaya Rem vs Waktu (V₀ = 300 km/h) - {result["controller_type"].capitalize()}')
+    plt.xlabel('Waktu (s)')
+    plt.ylabel('Gaya Rem (kN - kiloNewton)') # Menggunakan kN agar angka pada sumbu Y lebih mudah dibaca
+    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.legend(title="Kondisi Beban")
+    plt.show()
